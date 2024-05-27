@@ -1,0 +1,17 @@
+---
+
+- hosts: test
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Install postfix
+      yum:
+        name: postfix
+        state: present
+      tags: init postfix
+
+    - name: Del postfix
+      yum:
+        name: postfix
+        state: absent
+      tags: drop postfix
