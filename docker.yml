@@ -1,0 +1,26 @@
+---
+- hosts: test
+  gather_facts: yes
+  tasks:
+  - name: Install Docker Repo
+    get_url:
+      url: https://download.docker.com/linux/centos/docker-ce.repo
+      dest: /etc/yum.repos.d/docker-ce.repo
+    become: yes
+  - name: Install docker
+    package:
+      name: docker-ce
+      state: latest
+    become: yes
+  - name: Start service docker
+    service:
+      name: docker
+      state: started
+      enabled: yes
+    become: yes
+  - name: Add Groups Docker
+    user:
+      name: ansible
+      groups: docker
+      append: yes
+    become: yes
