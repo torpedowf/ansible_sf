@@ -1,0 +1,11 @@
+---
+- name: Install vsftpd
+  yum:
+    name: vsftpd
+    state: installed
+- name: Start vsftpd
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+  
