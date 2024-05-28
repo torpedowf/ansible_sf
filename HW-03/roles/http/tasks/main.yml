@@ -1,0 +1,30 @@
+---
+# tasks file for nginx_php-fpm
+- name: install nginx
+  package:
+    name: nginx
+    state: present
+- name: Create new webroot folder
+  file:
+    path: "{{ new_doc_root }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: 0744
+- name: upload index.php file
+  copy:
+    src: "{{ index_file_path }}"
+    dest: "{{ new_doc_root + index_file }}"
+    owner: www-data
+    group: www-data
+    mode: 0644
+- name: upload nginx test config file
+  copy:
+    src: "{{ conf_file_path + conf_file }}"
+    dest: "{{ nginx_conf_avail + conf_file }}"
+    owner: root
+    group: root
+    mode: 0644
+- name: Add symlink to enable test config
+  shell: "ln -s {{ nginx_conf_avail + conf_file }} {{ nginx_conf_enable }}"
+  notify: restart nginx

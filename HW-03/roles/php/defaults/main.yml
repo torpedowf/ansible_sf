@@ -1,0 +1,4 @@
+---
+# defaults file for php
+php-fpm_config_file_source: "/etc/ansible/roles/php/files/www.conf"
+php-fpm_config_file: "/etc/php/7.4/fpm/pool.d/www.conf"

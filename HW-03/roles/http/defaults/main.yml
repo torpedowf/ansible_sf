@@ -1,0 +1,9 @@
+---
+# defaults file for nginx_php-fpm
+conf_file_path: "/etc/ansible/roles/http/files"
+conf_file: "/test.conf"
+new_doc_root: "/opt/nginx/ansible"
+index_file: "/index.php"
+index_file_path: "/etc/ansible/roles/http/files/index.php"
+nginx_conf_avail: "/etc/nginx/sites-available"
+nginx_conf_enable: "/etc/nginx/sites-enabled/"

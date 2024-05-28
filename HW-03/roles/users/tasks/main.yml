@@ -1,0 +1,17 @@
+- name: Create new user
+  user:
+    name: user1
+- name: Create .ssh folder
+  file:
+    path: /home/user1/.ssh
+    state: directory
+    owner: user1
+    group: user1
+    mode: 0700
+- name: install ssh pub key
+  copy:
+    content: "{{ rsa_pub }}"
+    dest: /home/user1/.ssh/authorized_keys
+    owner: user1
+    group: user1
+    mode: 0600

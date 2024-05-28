@@ -1,0 +1,8 @@
+[local]
+localhost
+
+[nginx]
+192.168.100.200
+
+[php-fpm]
+192.168.100.100
