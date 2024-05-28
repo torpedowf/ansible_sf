@@ -1,0 +1,20 @@
+---
+ - name: install dnsmasq
+   yum:
+     name: dnsmasq
+     state: installed
+     update_cache: true
+
+ - name: Copy dnsmasq.conf file
+   ansible.builtin.template:
+     src: dnsmasq.conf.j2
+     dest: "{{ dnsmasq_config_file }}"
+     mode: "660"
+   notify:
+     - Restart dnsmasq
+
+ - name: Ensure dnsmasq service is enabled and started
+   ansible.builtin.service:
+     name: dnsmasq
+     state: started
+     enabled: true

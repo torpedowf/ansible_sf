@@ -1,0 +1,26 @@
+---
+- name: supeer user create
+  hosts: test
+  become: true
+  tasks:
+    
+    - name: Create superuser groups
+      ansible.builtin.group:
+        name: superusers
+        state: present
+    - name: Create user2
+      user:
+        name: user2
+        groups: superusers
+        append: true
+    - name: Create user3
+      user:
+        name: user3
+        groups: superusers
+        append: true
+    - name: Add sude rule 
+      ansible.builtin.lineinfile:
+        dest: /etc/sudoers.d/sudoers
+        line: "%superusers ALL=(ALL) NOPASSWD: ALL"
+        validate: 'visudo -cf %s'
+

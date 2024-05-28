@@ -1,0 +1,6 @@
+---
+- name: Testing role dnsmasq
+  hosts: test
+  become: true
+  roles:
+    - dnsmasq

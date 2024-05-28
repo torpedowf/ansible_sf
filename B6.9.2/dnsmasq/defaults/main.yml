@@ -1,0 +1,6 @@
+---
+# defaults file for dnsmasq
+dnsmasq_listen_address: "127.0.0.1"
+dnsmasq_resolv_file: "/etc/resolv.conf"
+dnsmasq_cache_size: "1000"
+dnsmasq_port: "5353"

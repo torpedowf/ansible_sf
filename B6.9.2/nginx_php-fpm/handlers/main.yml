@@ -1,0 +1,11 @@
+---
+# handlers file for nginx_php-fpm
+  - name: restart php-fpm
+    service:
+      name: php{{ php_version }}-fpm.service
+      state: restarted
+
+  - name: reload nginx
+    service:
+      name: nginx
+      state: reloaded

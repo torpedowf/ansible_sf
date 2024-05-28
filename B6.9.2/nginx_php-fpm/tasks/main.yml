@@ -1,0 +1,58 @@
+---
+# tasks file for nginx_php-fpm
+- name: install packages
+  yum:
+    name:
+      - nginx
+      - php-fpm
+    state: latest
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: start php-fpm
+  service:
+    name: php-fpm.service
+    state: started
+    enabled: yes
+
+- name: create www.conf from template
+  template:
+    src: /etc/ansible/roles/nginx_php-fpm/templates/www.conf.j2
+    dest: /etc/php-fpm.d/www.conf
+    backup: true
+  notify: restart php-fpm
+
+- name: delete nginx default site
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/nginx/sites-available/default
+    - /etc/nginx/sites-enabled/default
+
+- name: create nginx root dir
+  file:
+    path: "{{ nginx_root_dir }}"
+    state: directory
+
+- name: create index.php
+  copy:
+    content: "<?php phpinfo();?>"
+    dest: "{{ nginx_root_dir }}/index.php"
+
+- name: create nginx site from template
+  template:
+    src: ../templates/site.j2
+    dest: /etc/nginx/sites-available/{{ nginx_site_name }}
+    backup: false
+
+- name: create link in sites-enabled
+  file:
+    src: /etc/nginx/sites-available/{{ nginx_site_name }}
+    dest: /etc/nginx/sites-enabled/{{ nginx_site_name }}
+    state: link
+  notify: reload nginx

@@ -1,0 +1,13 @@
+---
+# vars file for nginx_php-fpm
+php_version: 8.0
+pool_user: www-data
+pool_group: www-data
+pm_max_children: 5
+pm_start_servers: 2
+pm_min_spare_servers: 1
+pm_max_spare_servers: 3
+nginx_port: 80
+nginx_root_dir: /opt/nginx/ansible
+nginx_server_name: umain
+nginx_site_name: umain
