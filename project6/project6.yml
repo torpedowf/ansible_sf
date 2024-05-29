@@ -1,0 +1,57 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: install dependency
+      apt:
+        name: "{{item}}"
+        state: present
+        update_cache: yes
+      when: inventory_hostname in groups ['app']
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+
+    - name: add GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      when: inventory_hostname in groups ['app']
+    - name: add repository docker
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu jammy stable
+        state: present
+      when: inventory_hostname in groups ['app']
+    - name: install docker
+      apt:
+        name: "{{item}}"
+        state: latest
+        update_cache: yes
+      when: inventory_hostname in groups ['app']
+      loop:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+    - name: sure docker started
+      service:
+        name: docker
+        state: started
+        enabled: yes
+      when: inventory_hostname in groups ['app']
+    - name: Install packages
+      ansible.builtin.apt:
+        name:
+          - postgresql
+          - postgresql-contrib
+          - libpq-dev
+          - python3-psycopg2
+        state: present
+      when: inventory_hostname in groups ['database']
+
+    - name: Check if PostgreSQL is initialized
+      ansible.builtin.stat:
+        path: "{{ postgresql_data_dir }}/pg_hba.conf"
+      register: postgres_data
+      when: inventory_hostname in groups ['database']
